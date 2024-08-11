@@ -42,6 +42,9 @@ class _SessionScreenState extends State<SessionScreen> {
       if (stopwatch.isRunning) {
         stopwatch.stop();
         isPaused = true;
+      } else {
+        stopwatch.start();
+        isPaused = false;
       }
     });
   }
@@ -69,7 +72,7 @@ class _SessionScreenState extends State<SessionScreen> {
 
     DatabaseHelper().insertSession({
       'date': DateTime.now().toIso8601String(),
-      'total_time': stopwatch.elapsed.inSeconds,
+      'total_time': disciplineTimes.reduce((a, b) => a + b),
       'discipline_times': disciplineTimes.map((d) => d.inSeconds).join(','),
     });
 
@@ -84,39 +87,116 @@ class _SessionScreenState extends State<SessionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Current Session')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              disciplines[currentDisciplineIndex],
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              formatTime(stopwatch.elapsed),
-              style: const TextStyle(fontSize: 48),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: pauseTimer,
-                  child: Text('Pause'),
-                ),
-                const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: nextDiscipline,
-                  child: Text(currentDisciplineIndex == disciplines.length - 1
-                      ? 'Finish'
-                      : 'Next'),
-                ),
-              ],
-            ),
-          ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.black, Colors.grey[900]!],
+          ),
         ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'CURRENT SESSION',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.yellow[700],
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(
+                      Icons.timer,
+                      color: Colors.yellow[700],
+                      size: 30,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        disciplines[currentDisciplineIndex].toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        formatTime(stopwatch.elapsed),
+                        style: TextStyle(
+                          fontSize: 64,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.yellow[700],
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildButton(
+                            isPaused ? 'CONTINUE' : 'PAUSE',
+                            isPaused ? Icons.play_arrow_rounded : Icons.pause,
+                            pauseTimer,
+                          ),
+                          const SizedBox(width: 20),
+                          _buildButton(
+                            currentDisciplineIndex == disciplines.length - 1
+                                ? 'FINISH'
+                                : 'NEXT',
+                            Icons.skip_next,
+                            nextDiscipline,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(String text, IconData icon, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.yellow[700],
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        elevation: 5,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1),
+          ),
+        ],
       ),
     );
   }
