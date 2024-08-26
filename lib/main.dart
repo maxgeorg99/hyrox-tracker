@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hyrox_tracker/database_helper.dart';
 import 'package:hyrox_tracker/history.dart';
 import 'package:hyrox_tracker/session.dart';
+import 'package:hyrox_tracker/settings.dart';
 
 String formatTime(Duration duration) {
   return '${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
 }
 
-void main() => runApp(const HyroxTrackerApp());
+late final DatabaseHelper dbHelper;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  dbHelper = DatabaseHelper();
+  await dbHelper.loadCategory();
+  runApp(HyroxTrackerApp());
+}
 
 class HyroxTrackerApp extends StatelessWidget {
   const HyroxTrackerApp({super.key});
@@ -92,6 +100,16 @@ class HomeScreen extends StatelessWidget {
                               builder: (context) => HistoryScreen()),
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      _buildButton(
+                          context,
+                          'SETTINGS',
+                          Icons.settings,
+                          () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SettingsScreen()),
+                              )),
                     ],
                   ),
                 ),

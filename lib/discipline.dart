@@ -31,12 +31,3 @@ extension DisciplineExtension on Discipline {
     }
   }
 }
-
-List<String> getFullWorkoutList() {
-  List<String> fullList = [];
-  for (var discipline in Discipline.values) {
-    fullList.add('1000m Run');
-    fullList.add(discipline.name);
-  }
-  return fullList;
-}

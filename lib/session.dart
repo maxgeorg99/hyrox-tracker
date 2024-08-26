@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hyrox_tracker/database_helper.dart';
-import 'package:hyrox_tracker/discipline.dart';
 import 'package:hyrox_tracker/main.dart';
+import 'package:hyrox_tracker/service.dart';
 import 'package:hyrox_tracker/summary.dart';
 
 class SessionScreen extends StatefulWidget {
@@ -72,7 +72,7 @@ class _SessionScreenState extends State<SessionScreen> {
 
     DatabaseHelper().insertSession({
       'date': DateTime.now().toIso8601String(),
-      'total_time': disciplineTimes.reduce((a, b) => a + b),
+      'total_time': disciplineTimes.reduce((a, b) => a + b).inSeconds,
       'discipline_times': disciplineTimes.map((d) => d.inSeconds).join(','),
     });
 
@@ -126,15 +126,7 @@ class _SessionScreenState extends State<SessionScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        disciplines[currentDisciplineIndex].toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 1,
-                        ),
-                      ),
+                      buildDisciplineText(disciplines[currentDisciplineIndex]),
                       const SizedBox(height: 20),
                       Text(
                         formatTime(stopwatch.elapsed),
@@ -142,6 +134,14 @@ class _SessionScreenState extends State<SessionScreen> {
                           fontSize: 64,
                           fontWeight: FontWeight.bold,
                           color: Colors.yellow[700],
+                        ),
+                      ),
+                      Text(
+                        formatTime(totalTime()),
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[700],
                         ),
                       ),
                       const SizedBox(height: 40),
@@ -174,6 +174,13 @@ class _SessionScreenState extends State<SessionScreen> {
     );
   }
 
+  Duration totalTime() {
+    if (disciplineTimes.length < 1) {
+      return stopwatch.elapsed;
+    }
+    return disciplineTimes.reduce((a, b) => a + b) + stopwatch.elapsed;
+  }
+
   Widget _buildButton(String text, IconData icon, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
@@ -200,4 +207,33 @@ class _SessionScreenState extends State<SessionScreen> {
       ),
     );
   }
+}
+
+Widget buildDisciplineText(String discipline) {
+  final weightString = getWeightStringFromDiscipline(discipline);
+  return Column(
+    children: [
+      Text(
+        discipline.toUpperCase(),
+        style: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          letterSpacing: 1,
+        ),
+      ),
+      if (weightString != null && weightString.isNotEmpty) ...[
+        const SizedBox(height: 10),
+        Text(
+          weightString,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            letterSpacing: 1,
+          ),
+        ),
+      ],
+    ],
+  );
 }

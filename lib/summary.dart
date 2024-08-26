@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hyrox_tracker/discipline.dart';
 import 'package:hyrox_tracker/main.dart';
+import 'package:hyrox_tracker/service.dart';
 
 class SummaryScreen extends StatelessWidget {
   final List<Duration> disciplineTimes;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hyrox_tracker/database_helper.dart';
-import 'package:hyrox_tracker/discipline.dart';
 import 'package:hyrox_tracker/main.dart';
+import 'package:hyrox_tracker/service.dart';
 import 'package:intl/intl.dart';
 
 class HistoryScreen extends StatefulWidget {
