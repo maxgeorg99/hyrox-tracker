@@ -31,7 +31,12 @@ String getWeightString(Discipline discipline, Category category) {
       Category.womenOpen: 10,
       Category.womenPro: 20
     },
-    Discipline.wallBalls: null,
+    Discipline.wallBalls: {
+      Category.menOpen: 6,
+      Category.menPro: 9,
+      Category.womenOpen: 4,
+      Category.womenPro: 6
+    },
   };
 
   num weight = weightMap[discipline]?[category] ?? 0;
