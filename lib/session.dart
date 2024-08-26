@@ -222,18 +222,16 @@ Widget buildDisciplineText(String discipline) {
           letterSpacing: 1,
         ),
       ),
-      if (weightString != null && weightString.isNotEmpty) ...[
-        const SizedBox(height: 10),
-        Text(
-          weightString,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            letterSpacing: 1,
-          ),
+      const SizedBox(height: 10),
+      Text(
+        weightString ?? '',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          letterSpacing: 1,
         ),
-      ],
+      ),
     ],
   );
 }
