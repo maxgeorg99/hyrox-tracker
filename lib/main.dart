@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hyrox_tracker/database_helper.dart';
 import 'package:hyrox_tracker/history.dart';
+import 'package:hyrox_tracker/intro.dart';
+import 'package:hyrox_tracker/service.dart';
 import 'package:hyrox_tracker/session.dart';
 import 'package:hyrox_tracker/settings.dart';
 
@@ -86,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SessionScreen()),
+                              builder: (context) => const HyroxIntroScreen(getWeightStringFromDiscipline: getWeightStringFromDiscipline)),
                         ),
                       ),
                       const SizedBox(height: 20),
