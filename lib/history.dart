@@ -185,20 +185,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  getTotalTime(Map<String, dynamic> session) {
-    var totalTime = session['total_time'];
-    if (totalTime > 1) {
-      return totalTime;
-    }
-    //fall back if session contains no total time
-    return session['discipline_times']
-        .split(',')
-        .asMap()
-        .entries
-        .map((entry) => int.parse(entry.value))
-        .reduce((a, b) => a + b);
-  }
-
   void _showSessionDetails(Map<String, dynamic> session) {
     showDialog(
       context: context,

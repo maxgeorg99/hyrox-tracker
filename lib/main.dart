@@ -88,7 +88,9 @@ class HomeScreen extends StatelessWidget {
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HyroxIntroScreen(getWeightStringFromDiscipline: getWeightStringFromDiscipline)),
+                              builder: (context) => const HyroxIntroScreen(
+                                  getWeightStringFromDiscipline:
+                                      getWeightStringFromDiscipline)),
                         ),
                       ),
                       const SizedBox(height: 20),
