@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hyrox_tracker/discipline.dart';
-import 'package:hyrox_tracker/discipline_card.dart';
-import 'package:hyrox_tracker/session.dart';
+import 'package:hyrox_tracker/intro/discipline_card.dart';
+import 'package:hyrox_tracker/session/session.dart';
 
 class HyroxIntroScreen extends StatelessWidget {
   final Function(String) getWeightStringFromDiscipline;
@@ -15,7 +15,12 @@ class HyroxIntroScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HYROX Workout'),
+        title: Text('HYROX Workout',style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.yellow[700],
+                        letterSpacing: 1.5,
+                      ),),
         centerTitle: true,
         backgroundColor: Colors.black,
       ),

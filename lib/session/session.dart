@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hyrox_tracker/database_helper.dart';
 import 'package:hyrox_tracker/main.dart';
 import 'package:hyrox_tracker/service.dart';
-import 'package:hyrox_tracker/summary.dart';
+import 'package:hyrox_tracker/session/summary.dart';
 
 class SessionScreen extends StatefulWidget {
   const SessionScreen({super.key});

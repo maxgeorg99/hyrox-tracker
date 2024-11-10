@@ -26,7 +26,7 @@ class DisciplineCard extends StatelessWidget {
       case Discipline.farmersCarry:
         return Icons.fitness_center;
       case Discipline.sandbagLunges:
-        return Icons.sports_martial_arts;
+        return Icons.hiking;
       case Discipline.wallBalls:
         return Icons.sports_baseball;
     }

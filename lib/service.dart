@@ -1,7 +1,5 @@
-import 'dart:ffi';
-
-import 'package:hyrox_tracker/category.dart';
 import 'package:hyrox_tracker/database_helper.dart';
+import 'package:hyrox_tracker/settings/category.dart';
 import 'package:hyrox_tracker/discipline.dart';
 import 'package:hyrox_tracker/main.dart';
 
@@ -47,6 +45,12 @@ String getWeightString(Discipline discipline, Category category) {
   return weight > 0 ? '${weight.toStringAsFixed(0)} kg' : '';
 }
 
+Discipline stringToDiscipline(String value) {
+  return Discipline.values.firstWhere(
+    (e) => e.name.toLowerCase() == value.toLowerCase().replaceAll(' ', '')
+  );
+}
+
 String? getWeightStringFromDiscipline(String disciplineStr) {
   try {
     final discipline = Discipline.values.firstWhere(
@@ -83,7 +87,7 @@ Future<String> getSessionsPerMonth() async {
   return count.toString();
 }
 
-Future<String> getTotalTimeDelta() async {
+Future<num> getTotalTimeDelta() async {
   DatabaseHelper dbHelper = DatabaseHelper();
   var sessions = dbHelper.getSessions();
 
@@ -91,7 +95,7 @@ Future<String> getTotalTimeDelta() async {
 
   final recentSessions = sessionList.take(5).toList();
 
-  if (recentSessions.length < 2) return '0';
+  if (recentSessions.length < 2) return 0;
 
   num totalDiff = 0;
   for (int i = 0; i < recentSessions.length - 1; i++) {
@@ -102,7 +106,7 @@ Future<String> getTotalTimeDelta() async {
 
   final averageDiff = totalDiff ~/ (recentSessions.length - 1);
 
-  return averageDiff.toString();
+  return averageDiff;
 }
 
 double getAverageRunTime(dynamic session) {

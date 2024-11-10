@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hyrox_tracker/database_helper.dart';
-import 'package:hyrox_tracker/history.dart';
-import 'package:hyrox_tracker/intro.dart';
+import 'package:hyrox_tracker/history/history.dart';
+import 'package:hyrox_tracker/intro/intro.dart';
 import 'package:hyrox_tracker/service.dart';
-import 'package:hyrox_tracker/session.dart';
-import 'package:hyrox_tracker/settings.dart';
+import 'package:hyrox_tracker/settings/settings.dart';
 
 String formatTime(Duration duration) {
   return '${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes % 60).toString().padLeft(2, '0')}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
@@ -98,6 +97,17 @@ class HomeScreen extends StatelessWidget {
                         context,
                         'VIEW HISTORY',
                         Icons.history,
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HistoryScreen()),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildButton(
+                        context,
+                        'PROGRESSION',
+                        Icons.trending_up,
                         () => Navigator.push(
                           context,
                           MaterialPageRoute(

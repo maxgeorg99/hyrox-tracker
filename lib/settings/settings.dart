@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hyrox_tracker/category.dart';
+import 'package:hyrox_tracker/settings/category.dart';
 import 'package:hyrox_tracker/main.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -11,6 +11,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late Category _selectedOption;
+  Duration _timeGoal = const Duration(hours: 1, minutes: 20);
 
   @override
   void initState() {
@@ -23,6 +24,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _selectedOption = currentCategory;
     });
+  }
+
+  Future<void> _selectTimeGoal(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: _timeGoal.inHours, minute: _timeGoal.inMinutes % 60),
+    );
+    if (picked != null) {
+      setState(() {
+        _timeGoal = Duration(hours: picked.hour, minutes: picked.minute);
+      });
+    }
   }
 
   @override
@@ -86,6 +99,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _buildRadioListTile(Category.menPro, 'Men Pro'),
                       _buildRadioListTile(Category.womenOpen, 'Women Open'),
                       _buildRadioListTile(Category.womenPro, 'Women Pro'),
+                      SizedBox(height: 40),
+                      Text(
+                        'Set Time Goal:',
+                        style: TextStyle(
+                          color: Colors.yellow[700],
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: ElevatedButton(
+                          onPressed: () => _selectTimeGoal(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[800],
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            minimumSize: Size(double.infinity, 0),
+                            alignment: Alignment.center,
+                          ),
+                          child: Text(
+                            '${_timeGoal.inHours}h ${_timeGoal.inMinutes % 60}m',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.yellow,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -96,7 +138,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
+                      // Save category and time goal here
                       await dbHelper.saveCategory(_selectedOption);
+                      // TODO: Save the time goal
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Settings saved')),
                       );
